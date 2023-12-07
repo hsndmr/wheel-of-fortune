@@ -241,14 +241,20 @@ export function WheelOfFortune({ segments, ...rest }: WheelOfFortuneProps) {
 
       rotation.value = 0;
     })
-    .onFinalize(() => {
+    .onFinalize((event) => {
       if (isSpinning.value) {
         return;
       }
 
       isSpinning.value = true;
 
-      const numberOfRotation = 6;
+      const numberOfRotation = Math.floor(
+        interpolate(
+          event.velocityX,
+          [-3000, -2000, 0, 2000, 3000],
+          [6, 4, 1, 4, 6]
+        )
+      );
       const duration = 1000 * numberOfRotation;
       const randomSegmentIndex = Math.floor(Math.random() * segments.length);
 
